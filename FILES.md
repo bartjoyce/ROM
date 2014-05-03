@@ -8,5 +8,5 @@ selector/parser.js
 
 This results in the following command-line command:
 ```
-java -jar ../closurecompiler/compiler.jar js=main.js js=selector/selector.js js=selector/tree.js js=selector/parser.js js_output_file=../bin/ROM.js
+java -jar ../closurecompiler/compiler.jar --js=main.js --js=selector/selector.js --js=selector/tree.js --js=selector/parser.js --js_output_file=../bin/ROM.js
 ```

@@ -8,5 +8,5 @@ Setup & Compilation
 -------------------
 ROM uses the Google Closure Compiler. You can compile the ``ROM.js`` file by executing the following command in the ``src`` directory:
 ```
-java -jar ../closurecompiler/compiler.js --js=main.js --js_output_file=../bin/ROM.js
+java -jar ../closurecompiler/compiler.jar --js=main.js --js=selector/selector.js --js=selector/tree.js --js=selector/parser.js --js_output_file=../bin/ROM.js
 ```
