@@ -1,0 +1,1 @@
+window.ROM=function(){return{}}();window.ROM.selector=function(){return{Selector:function(a,b,c,d,e,f){this.match=function(a){};this.selectorString=a||"";return this}}}();window.ROM.selector.SelectorTree=function(){this.addSelector=function(a){}};window.ROM.selector.tree=new ROM.selector.SelectorTree;window.ROM.selector.parseString=function(){return function(a){}}();
