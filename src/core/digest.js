@@ -7,7 +7,7 @@
 ROM.digest = (function() {
   var isDigesting = false;
 
-  var queue = [];
+  var digestQueue = [];
   var postDigestQueue = [];
 
   /**
@@ -23,9 +23,9 @@ ROM.digest = (function() {
     var ttl = 10;
 
     // Run queue
-    for (var i = 0; i < queue.length; i += 1) {
+    for (var i = 0; i < digestQueue.length; i += 1) {
       try {
-        queue[i]();
+        digestQueue[i]();
       } catch (e) {
         (console.error || console.log)(e);
       }
@@ -33,7 +33,7 @@ ROM.digest = (function() {
       if (!(ttl--))
         throw "10 digest iterations reached";
     }
-    queue = [];
+    digestQueue = [];
 
     // Run postDigestQueue
     for (var i = 0; i < postDigestQueue.length; i += 1) {
@@ -57,7 +57,7 @@ ROM.digest = (function() {
     if (typeof fn !== 'function')
       return;
 
-    queue.push(fn);
+    digestQueue.push(fn);
   };
 
   /**
