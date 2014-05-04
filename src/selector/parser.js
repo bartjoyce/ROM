@@ -39,6 +39,9 @@ window.ROM.selector.parseString = (function() {
 
     var tagName, id, classes = [], attributes = {};
 
+    var classStrings = [];
+    var attributeStrings = [];
+
     while (instance[0] < selectorString.length) {
       chr = selectorString[instance[0]];
 
@@ -48,7 +51,9 @@ window.ROM.selector.parseString = (function() {
       switch (chr) {
         case '.':
           // Class
-          classes.push(parseClass(selectorString, instance))
+          var className = parseClass(selectorString, instance).toLowerCase();
+          classes.push(className)
+          classStrings.push('.' + className);
           break;
         case '#':
           // Id
@@ -58,6 +63,7 @@ window.ROM.selector.parseString = (function() {
           // Attribute
           var attribute = parseAttribute(selectorString, instance);
           attributes[attribute.name] = attribute.matchFn;
+          attributeStrings.push(['[', attribute.name, attribute.matchType, '"', attribute.matchValue, '"]'].join(''));
           break;
         default:
           // TagName
@@ -66,7 +72,7 @@ window.ROM.selector.parseString = (function() {
       }
     }
 
-    return new ROM.selector.Selector(selectorString.substring(start, instance[0]),
+    return new ROM.selector.Selector(selectorToString(tagName, id, classStrings, attributeStrings),
                                      tagName, id, classes, attributes, directAncestor);
   };
 
@@ -110,7 +116,7 @@ window.ROM.selector.parseString = (function() {
     // Determine match type, e.g. = ~= |= ...
     var chr = selectorString[instance[0]];
 
-    var matchType;
+    var matchType, matchValue;
 
     if (chr === ']') {
       attribute.matchFn = ROM.selector.attributes.getMatchFunction('exists');
@@ -151,16 +157,18 @@ window.ROM.selector.parseString = (function() {
           instance[0] += 1;
       }
 
-      attribute.matchValue = selectorString.substring(start, instance[0]);
+      matchValue = selectorString.substring(start, instance[0]);
       instance[0] += 1;
 
     } else {
-      attribute.matchValue = parseText(selectorString, instance);
+      matchValue = parseText(selectorString, instance);
     }
 
     // Closing bracket
     instance[0] += 1;
 
+    attribute.matchType = matchType;
+    attribute.matchValue = matchValue;
     attribute.matchFn = ROM.selector.attributes.getMatchFunction(matchType, attribute.matchValue);
     return attribute;
   };
@@ -193,7 +201,7 @@ window.ROM.selector.parseString = (function() {
    */
   var isWhitespace = function isWhitespace(chr) {
     return (' \t\r\n'.indexOf(chr) !== -1);
-  }
+  };
 
   /**
    * isName()
@@ -202,7 +210,26 @@ window.ROM.selector.parseString = (function() {
    */
   var isName = function isName(chr) {
     return ('#.[]~|^$*=">'.indexOf(chr) === -1 && !isWhitespace(chr));
-  }
+  };
+
+  /**
+   * selectorToString()
+   * Returns a string representation of a parsed selector.
+   */
+  var selectorToString = function selectorToString(tagName, id, classStrings, attributeStrings) {
+    var out = [];
+
+    if (tagName)
+      out.push(tagName.toUpperCase());
+
+    if (id)
+      out.push('#', id.toLowerCase());
+
+    out = out.concat(classStrings.sort());
+    out = out.concat(attributeStrings.sort());
+
+    return out.join('');
+  };
 
   return parseString;
 })();

@@ -10,6 +10,8 @@ window.ROM.selector.attributes = (function() {
 
   attributes.getMatchFunction = function getMatchFunction(matchType, matchValue) {
     var matchFn = attributes.attr[matchType] || function() { return false; };
+    var matchValue = matchValue.toLowerCase();
+
     var matchAttribute = function matchAttribute(attributeValue) {
       return matchFn(matchValue, attributeValue);
     };
