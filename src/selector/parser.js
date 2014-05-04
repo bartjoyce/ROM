@@ -114,6 +114,8 @@ window.ROM.selector.parseString = (function() {
 
     if (chr === ']') {
       attribute.matchFn = ROM.selector.attributes.getMatchFunction('exists');
+      instance[0] += 1;
+
       return attribute;
 
     } else if (chr === '=') {

@@ -31,7 +31,7 @@ window.ROM.selector = (function() {
         return isParent(parentElement, element);
       };
 
-      return (directAncestor) ? filterArray(elements, parentFilter) : elements;
+      return (directAncestor) ? filterArray(elements, parentFilter) : nodeListToArray(elements);
     };
 
     /**
@@ -57,7 +57,7 @@ window.ROM.selector = (function() {
         return isParent(parentElement, element);
       };
 
-      return (directAncestor) ? filterArray(elements, parentFilter) : elements;
+      return (directAncestor) ? filterArray(elements, parentFilter) : nodeListToArray(elements);
     };
 
     /**
@@ -65,15 +65,17 @@ window.ROM.selector = (function() {
      * Returns an array of elements matching all attributes
      */
     var matchAttributes = function matchAttributes(parentElement) {
-      var elements = [].concat(parentElement.children);
+      var elements = nodeListToArray(getChildren(parentElement) || parentElement.childNodes);
 
       if (!directAncestor) {
         var concatenateChildren = function concatenateChildren(element) {
           elements = elements.concat(element);
 
-          for (var i = 0; i < element.children.length; i += 1)
-            concatenateChildren(element.children[i]);
+          var elementChildren = getChildren(element);
+          for (var i = 0; i < elementChildren.length; i += 1)
+            concatenateChildren(elementChildren[i]);
         };
+        concatenateChildren(parentElement);
       }
 
       return filterAttributes(parentElement, elements);
@@ -133,7 +135,7 @@ window.ROM.selector = (function() {
           var attributeKey = attributeKeys[i];
           var match = attributes[attributeKey];
 
-          if (!element.hasAttribute(attributeKey) || !match(element.getAttribute(attributeKey)))
+          if (!element.hasAttribute || !element.hasAttribute(attributeKey) || !match(element.getAttribute(attributeKey)))
             return false;
         }
 
@@ -148,6 +150,9 @@ window.ROM.selector = (function() {
      * Returns whether an element is an ancestor of another element.
      */
     var isAncestor = function isAncestor(ancestorElement, childElement) {
+      if (ancestorElement === document)
+        return true;
+
       while (childElement.parentElement !== null) {
         if (isParent(ancestorElement, childElement))
           return true;
@@ -182,30 +187,23 @@ window.ROM.selector = (function() {
     };
 
     /**
-     * mapArray()
-     * Given an array and a function, it maps the function to each
-     * individual element, returning the resulting array.
-     * NOTE: Original array mutated.
+     * nodeListToArray()
+     * Given a nodeList outputs an array
      */
-    var mapArray = function mapArray(array, mapFn) {
-      for (var i = 0; i < array.length; i += 1)
-        array[i] = mapFn(array[i], i);
-
-      return array;
+    var nodeListToArray = function nodeListToArray(nodeList) {
+      return Array.prototype.slice.call(nodeList, 0);
     };
 
     /**
-     * multiMapArray()
-     * Given an array and a function (which returns an array), it creates
-     * a new array with all of the function arrays concatenated.
+     * getChildren()
+     * Given a DOMElement returns its children
      */
-    var multiMapArray = function multiMapArray(array, mapFn) {
-      var newArray = [];
+    var getChildren = function getChildren(element) {
+      var filterElements = function filterElements(element) {
+        return (element.nodeType === 1);
+      };
 
-      for (var i = 0; i < array.length; i += 1)
-        newArray = newArray.concat(mapFn(array[i], i));
-
-      return newArray;
+      return element.children || filterArray(element.childNodes, filterElements);
     };
 
     /**
