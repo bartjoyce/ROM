@@ -3,7 +3,7 @@
  * - ROM.apply (function)
  * - ROM.applyAsync (function)
  */
-ROM.apply = (function() {
+window.ROM.apply = (function() {
   /**
    * apply()
    * Executes a function followed by a digest.
@@ -16,7 +16,7 @@ ROM.apply = (function() {
   return apply;
 })();
 
-ROM.applyAsync = (function() {
+window.ROM.applyAsync = (function() {
   var scheduledDigest = false;
 
   /**
