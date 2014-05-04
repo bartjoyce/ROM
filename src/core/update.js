@@ -5,11 +5,27 @@
 window.ROM.update = (function() {
   /**
    * update()
-   * Update takes an element and updates all its
-   * components. It then proceeds to update all
-   * parent elements.
+   * Given an element it updates all its components.
+   * It then proceeds to update all parent and child
+   * elements.
    */
-  var update = function(element) {
+  var update = function update(element) {
+
+  };
+
+  /**
+   * updateOutwards()
+   * Given an element it updates its parent element.
+   */
+  var updateOutwards = function updateOutwards(element) {
+
+  };
+
+  /**
+   * updateInwards()
+   * Given an element it updates its child elements.
+   */
+  var updateInwards = function updateInwards(element) {
 
   };
 
