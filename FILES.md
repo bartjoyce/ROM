@@ -4,6 +4,7 @@ main.js
 core/digest.js
 core/apply.js
 core/update.js
+component/component.js
 selector/selector.js
 selector/tree.js
 selector/attributes.js
