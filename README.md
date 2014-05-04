@@ -6,7 +6,7 @@ To understand the way ROM operates, read the [example usage](https://github.com/
 
 Setup & Compilation
 -------------------
-ROM uses the Google Closure Compiler, which requires JVM version 1.7 or later. You can compile the ``ROM.js`` file by executing the ``bin/compile.sh`` script like so:
+ROM uses the Google Closure Compiler, which requires JVM version 1.7 or later. You can compile the [``ROM.js``](https://github.com/bartjoyce/ROM/blob/master/bin/ROM.js) file by executing the [``bin/compile.sh``](https://github.com/bartjoyce/ROM/blobl/master/bin/compile.sh) script like so:
 ```bash
 sh bin/compile.sh
 ```
