@@ -1,7 +1,6 @@
 /**
  * digest.js implements:
  * - ROM.digest (function)
- * - ROM.digest.watch (function)
  * - ROM.digest.async (function)
  * - ROM.digest.queuePostDigest (function)
  */
