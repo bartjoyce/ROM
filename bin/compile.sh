@@ -4,6 +4,8 @@ cd ../src
 
 java -jar "../closurecompiler/compiler.jar" \
 --js "main.js" \
+--js "core/digest.js" \
+--js "core/apply.js" \
 --js "selector/selector.js" \
 --js "selector/tree.js" \
 --js "selector/attributes.js" \
