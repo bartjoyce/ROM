@@ -31,8 +31,8 @@ ROM.applyAsync = (function() {
       ROM.digest();
     }, 0);
 
-    ROM.digest.queueAsync(fn);
+    ROM.digest.queue(fn);
   };
 
-  return apply;
+  return applyAsync;
 })();
