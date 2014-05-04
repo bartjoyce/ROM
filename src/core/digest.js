@@ -5,6 +5,8 @@
  * - ROM.digest.queuePostDigest (function)
  */
 ROM.digest = (function() {
+  var isDigesting = false;
+
   var queue = [];
   var postDigestQueue = [];
 
@@ -13,6 +15,11 @@ ROM.digest = (function() {
    * Runs a digest cycle (updates elements, etc...)
    */
   var digest = function digest() {
+    if (isDigesting)
+      return;
+
+    isDigesting = true;
+
     var ttl = 10;
 
     // Run queue
@@ -38,6 +45,7 @@ ROM.digest = (function() {
     }
     postDigestQueue = [];
 
+    isDigesting = false;
   };
 
   /**
