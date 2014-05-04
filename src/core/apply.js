@@ -17,14 +17,21 @@ ROM.apply = (function() {
 })();
 
 ROM.applyAsync = (function() {
+  var scheduledDigest = false;
+
   /**
    * applyAsync()
    * Applies a function in the next js step
    */
   var applyAsync = function applyAsync(fn) {
-    setTimeout(function applyAsyncTimeout() {
-      ROM.digest();
-    }, 0);
+    if (!scheduledDigest) {
+      setTimeout(function applyAsyncTimeout() {
+        scheduledDigest = false;
+        ROM.digest();
+      }, 0);
+    }
+
+    scheduledDigest = true;
 
     ROM.digest.queue(fn);
   };
