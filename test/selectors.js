@@ -25,3 +25,13 @@ var matchSelectors = function matchSelectors(selectors, element) {
 
 	return matched;
 }
+
+var parse = function parse(query) {
+    var selectors = ROM.selector.parseString(query);
+    var out = [];
+
+    for (var i = 0; i < selectors.length; i += 1)
+        out.push(selectors[i].selectorString);
+
+    return out.join(' ');
+}
