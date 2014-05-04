@@ -5,23 +5,23 @@
 
 window.ROM.selector.parseString = (function() {
   var parseString = function parseString(selectorString) {
-    var index = 0;
-    var char;
+    var instance = [0]; // Make index mutable
+    var chr;
     var directAncestor = false;
 
     var selectors = [];
 
-    while (index < selectorString.length) {
-      char = selectorString[index];
+    while (instance[0] < selectorString.length) {
+      chr = selectorString[instance[0]];
 
-      if (isWhitespace(char))
-        index += 1;
-      else if (char === '>') {
+      if (isWhitespace(chr))
+        instance[0] += 1;
+      else if (chr === '>') {
         directAncestor = true;
-        index += 1;
+        instance[0] += 1;
         continue;
       } else
-        selectors.push(parseSelector(selectorString, index, directAncestor));
+        selectors.push(parseSelector(selectorString, instance, directAncestor));
 
       directAncestor = false;
     }
@@ -33,21 +33,19 @@ window.ROM.selector.parseString = (function() {
    * parseSelector()
    * Parses a given selector string.
    */
-  var parseSelector = function parseSelector(selectorString, index, directAncestor) {
-    var start = index;
-    var char;
+  var parseSelector = function parseSelector(selectorString, instance, directAncestor) {
+    var start = instance[0];
+    var chr;
 
     var tagName, id, classes = [], attributes = {};
 
-    var instance = [index]; // Make index mutable
-
     while (instance[0] < selectorString.length) {
-      char = selectorString[instance[0]];
+      chr = selectorString[instance[0]];
 
-      if (isWhitespace(char) || char === '>')
+      if (isWhitespace(chr) || chr === '>')
         break;
 
-      switch (char) {
+      switch (chr) {
         case '.':
           // Class
           classes.push(parseClass(selectorString, instance))
@@ -68,7 +66,7 @@ window.ROM.selector.parseString = (function() {
       }
     }
 
-    return new ROM.selector.Selector(selectorString.substring(index, instance[0]),
+    return new ROM.selector.Selector(selectorString.substring(start, instance[0]),
                                      tagName, id, classes, attributes, directAncestor);
   };
 
@@ -105,15 +103,63 @@ window.ROM.selector.parseString = (function() {
   var parseAttribute = function parseAttribute(selectorString, instance) {
     var attribute = {};
 
+    // Read attribute name
     instance[0] += 1;
     attribute.name = parseText(selectorString, instance);
 
-    var char = selectorString[instance[0]];
+    // Determine match type, e.g. = ~= |= ...
+    var chr = selectorString[instance[0]];
 
-    if (char === ']') {
+    var matchType;
 
+    if (chr === ']') {
+      attribute.matchFn = ROM.selector.attributes.getMatchFunction('exists');
+      return attribute;
+
+    } else if (chr === '=') {
+      matchType = '=';
+
+    } else {
+
+      instance[0] += 1;
+      var comparator = chr + selectorString[instance[0]];
+      var comparators = Object.keys(ROM.selector.attributes.attr);
+
+      if (comparators.indexOf(comparator) !== -1)
+        matchType = comparator;
+      else
+        matchType = 'exists';
     }
 
+    instance[0] += 1;
+
+    // Read value
+    var chr = selectorString[instance[0]];
+
+    if (chr === '"') {
+      instance[0] += 1;
+
+      var start = instance[0];
+      while (instance[0] < selectorString.length) {
+        chr = selectorString[instance[0]];
+
+        if (chr === '"')
+          break;
+        else
+          instance[0] += 1;
+      }
+
+      attribute.matchValue = selectorString.substring(start, instance[0]);
+      instance[0] += 1;
+
+    } else {
+      attribute.matchValue = parseText(selectorString, instance);
+    }
+
+    // Closing bracket
+    instance[0] += 1;
+
+    attribute.matchFn = ROM.selector.attributes.getMatchFunction(matchType, attribute.matchValue);
     return attribute;
   };
 
@@ -124,12 +170,12 @@ window.ROM.selector.parseString = (function() {
    */
   var parseText = function parseText(selectorString, instance) {
     var start = instance[0];
-    var char;
+    var chr;
 
     while (instance[0] < selectorString.length) {
-      char = selectorString[instance[0]];
+      chr = selectorString[instance[0]];
 
-      if (!isName(char))
+      if (!isName(chr))
         break;
 
       instance[0] += 1;
@@ -140,20 +186,20 @@ window.ROM.selector.parseString = (function() {
 
   /**
    * isWhitespace()
-   * Returns whether or not the character is a whitespace
-   * character.
+   * Returns whether or not the chracter is a whitespace
+   * chracter.
    */
-  var isWhitespace = function isWhitespace(char) {
-    return (' \t\r\n'.indexOf(char) !== -1);
+  var isWhitespace = function isWhitespace(chr) {
+    return (' \t\r\n'.indexOf(chr) !== -1);
   }
 
   /**
    * isName()
-   * Returns whether or not the character is a name character,
+   * Returns whether or not the chracter is a name chracter,
    * e.g. not # . [] * | ^ = :
    */
-  var isName = function isName(char) {
-    return ('#.[]~|^$*="'.indexOf(char) === -1 && !isWhitespace(char));
+  var isName = function isName(chr) {
+    return ('#.[]~|^$*=">'.indexOf(chr) === -1 && !isWhitespace(chr));
   }
 
   return parseString;

@@ -9,7 +9,7 @@ window.ROM.selector.attributes = (function() {
   var attributes = {};
 
   attributes.getMatchFunction = function getMatchFunction(matchType, matchValue) {
-    var matchFn = attributes.attr[matchType] || function() { return true; };
+    var matchFn = attributes.attr[matchType] || function() { return false; };
     var matchAttribute = function matchAttribute(attributeValue) {
       return matchFn(matchValue, attributeValue);
     };
@@ -22,10 +22,24 @@ window.ROM.selector.attributes = (function() {
       return (matchValue === attributeValue);
     },
     '~=': function valueContainsWord(matchValue, attributeValue) {
-      return (simplifyValue(attributeValue).indexOf(simplifyValue(matchValue)) !== -1);
+      var matchValueWords = splitWords(matchValue);
+      var attributeValueWords = splitWords(attributeValue);
+
+      for (var i = 0; i < matchValueWords.length; i += 1)
+        if (attributeValueWords.indexOf(matchValueWords[i]) === -1)
+          return false;
+
+      return true;
     },
     '|=': function valueStartsWithWord(matchValue, attributeValue) {
-      return (simplifyValue(attributeValue).indexOf(simplifyValue(matchValue)) === 0);
+      var matchValueWords = splitWords(matchValue);
+      var attributeValueWords = splitWords(attributeValue);
+
+      for (var i = 0; i < matchValueWords.length; i += 1)
+        if (attributeValueWords[i] !== matchValueWords[i])
+          return false;
+
+      return true;
     },
     '^=': function valueStartsWith(matchValue, attributeValue) {
       return (attributeValue.indexOf(matchValue) === 0);
@@ -35,6 +49,9 @@ window.ROM.selector.attributes = (function() {
     },
     '*=': function valueContains(matchValue, attributeValue) {
       return (attributeValue.indexOf(matchValue) !== -1);
+    },
+    'exists': function attributeExists() {
+      return true;
     }
   };
 
