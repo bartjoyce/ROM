@@ -9,12 +9,7 @@ ROM.apply = (function() {
    * Executes a function followed by a digest.
    */
   var apply = function apply(fn) {
-    try {
-      fn();
-    } catch(e) {
-      (console.error || console.log)(e);
-    }
-
+    ROM.digest.queue(fn);
     ROM.digest();
   };
 
