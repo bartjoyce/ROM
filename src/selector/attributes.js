@@ -7,6 +7,13 @@
 window.ROM.selector.attributes = (function() {
   var attributes = {};
 
+  /**
+   * getMatchFunction()
+   * Given the type of attribute selector and the search value
+   * returns a function with which you can match attribute values
+   * against the selector.
+   * @nosideeffects
+   */
   attributes.getMatchFunction = function getMatchFunction(matchType, matchValue) {
     var matchFn = attributes.attr[matchType] || function() { return false; };
     var matchValue = matchValue.toLowerCase();
@@ -18,6 +25,11 @@ window.ROM.selector.attributes = (function() {
     return matchAttribute;
   };
 
+  /**
+   * attr
+   * Stores all the different match functions for the
+   * various attribute selectors.
+   */
   attributes.attr = {
     '=': function valueEqual(matchValue, attributeValue) {
       return (matchValue === attributeValue);
