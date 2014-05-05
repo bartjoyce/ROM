@@ -6,11 +6,11 @@ core/apply.js
 core/update.js
 component/component.js
 selector/selector.js
-selector/tree.js
 selector/attributes.js
 selector/parser.js
 util/util.js
 util/components.js
+util/arrays.js
 ```
 
 This is basically what ``bin/compile.sh`` does.
