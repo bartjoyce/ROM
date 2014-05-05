@@ -9,6 +9,7 @@ selector/selector.js
 selector/tree.js
 selector/attributes.js
 selector/parser.js
+util/util.js
 util/components.js
 ```
 
