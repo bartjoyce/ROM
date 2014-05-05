@@ -69,15 +69,6 @@ window.ROM.selector.attributes = (function() {
   };
 
   /**
-   * simplifyValue()
-   * Returns a string where all words of a value (split with
-   * the splitWords function) are joined together with spaces.
-   */
-  var simplifyValue = function simplifyValue(value) {
-    return splitWords(value).join(' ');
-  };
-
-  /**
    * splitWords()
    * Returns an array of the words of the value.
    * A word is separated from other words by a space or hyphen.
