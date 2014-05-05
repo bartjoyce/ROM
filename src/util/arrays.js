@@ -49,13 +49,13 @@ window.ROM.util.arrayReduce = (function() {
    * an empty array it will return the startingValue.
    */
   var arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
-    var value = startingValue || null;
+    var value = array[0] || startingValue;
 
     if (array.length === 1)
-      return array[0];
+      return value;
 
-    for (var i = 0; i < array.length - 1; i += 1)
-      value = reduceFn(array[i], array[i + 1]);
+    for (var i = 1; i < array.length; i += 1)
+      value = reduceFn(value, array[i]);
 
     return value;
   };
