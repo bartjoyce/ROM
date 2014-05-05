@@ -4,7 +4,6 @@
  * - ROM.selector.attributes.getMatchFunction (function)
  * - ROM.selector.attributes.attr (object)
  */
-
 window.ROM.selector.attributes = (function() {
   var attributes = {};
 
