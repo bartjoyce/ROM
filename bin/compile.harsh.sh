@@ -14,7 +14,7 @@ java -jar "../closurecompiler/compiler.jar" \
 --js "util/util.js" \
 --js "util/components.js" \
 --js "util/arrays.js" \
---js_output_file "../bin/ROM.js" \
+--js_output_file "../bin/ROM.harsh.js" \
 --use_types_for_optimization \
 --compilation_level ADVANCED_OPTIMIZATIONS
 
