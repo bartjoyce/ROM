@@ -3,9 +3,9 @@
  * - ROM.components (object)
  * - ROM.Component (constructor)
  */
-window.ROM.components = {};
+window['ROM']['components'] = {};
 
-window.ROM.Component = (function() {
+window['ROM']['Component'] = (function() {
   /**
    * new Component()
    * Creates a new component object which can control elements.

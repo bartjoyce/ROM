@@ -4,7 +4,7 @@
  * - ROM.util.arrayMap (function)
  * - ROM.util.arrayReduce (function)
  */
-window.ROM.util.arrayFilter = (function() {
+window['ROM']['util']['arrayFilter'] = (function() {
   /**
    * arrayFilter()
    * Filters an array based on the criteria set by the filterFn;
@@ -23,7 +23,7 @@ window.ROM.util.arrayFilter = (function() {
   return arrayFilter;
 })();
 
-window.ROM.util.arrayMap = (function() {
+window['ROM']['util']['arrayMap'] = (function() {
   /**
    * arrayMap()
    * Maps the output of mapFn to all elements of a given array,
@@ -39,7 +39,7 @@ window.ROM.util.arrayMap = (function() {
   return arrayMap;
 })();
 
-window.ROM.util.arrayReduce = (function() {
+window['ROM']['util']['arrayReduce'] = (function() {
   /**
    * arrayReduce()
    * Runs a reduceFn on all elements of the array

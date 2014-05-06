@@ -2,7 +2,7 @@
  * parser.js implements:
  * - ROM.selector.parseString()
  */
-window.ROM.selector.parseString = (function() {
+window['ROM']['selector']['parseString'] = (function() {
   var parseString = function parseString(selectorString) {
     var instance = [0]; // Make index mutable
     var chr;

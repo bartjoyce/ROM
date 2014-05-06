@@ -2,7 +2,7 @@
  * update.js implements:
  * - ROM.update (function)
  */
-window.ROM.update = (function() {
+window['ROM']['update'] = (function() {
   /**
    * update()
    * Given an element it updates all its components.

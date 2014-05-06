@@ -1,4 +1,4 @@
-window.ROM = (function() {
+window['ROM'] = (function() {
   var ROM = {};
 
 

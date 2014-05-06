@@ -4,7 +4,7 @@
  * - ROM.digest.async (function)
  * - ROM.digest.queuePostDigest (function)
  */
-window.ROM.digest = (function() {
+window['ROM']['digest'] = (function() {
   var isDigesting = false;
 
   var digestQueue = [];

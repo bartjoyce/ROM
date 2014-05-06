@@ -4,10 +4,10 @@
  * - ROM.selector.Selector (constructor)
  */
 
-window.ROM.selector = (function() {
+window['ROM']['selector'] = (function() {
   var selector = {};
 
-  selector.Selector = function Selector(selectorString, tagName, id, classes, attributes, directAncestor) {
+  selector['Selector'] = function Selector(selectorString, tagName, id, classes, attributes, directAncestor) {
     // Argument default values
     selectorString = selectorString || '';
     tagName = tagName || null;
