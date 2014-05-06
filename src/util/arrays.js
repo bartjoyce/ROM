@@ -9,7 +9,6 @@ window.ROM.util.arrayFilter = (function() {
    * arrayFilter()
    * Filters an array based on the criteria set by the filterFn;
    * returns the filtered array.
-   * @nosideeffects
    */
   var arrayFilter = function arrayFilter(array, filterFn) {
     var newArray = [];

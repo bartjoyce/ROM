@@ -12,7 +12,6 @@ window.ROM.selector.attributes = (function() {
    * Given the type of attribute selector and the search value
    * returns a function with which you can match attribute values
    * against the selector.
-   * @nosideeffects
    */
   attributes.getMatchFunction = function getMatchFunction(matchType, matchValue) {
     var matchFn = attributes.attr[matchType] || function() { return false; };
