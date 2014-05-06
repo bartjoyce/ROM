@@ -19,7 +19,7 @@ window.ROM.selector.attributes = (function() {
     var matchValue = matchValue.toLowerCase();
 
     var matchAttribute = function matchAttribute(attributeValue) {
-      return matchFn(matchValue, attributeValue);
+      return matchFn(matchValue, attributeValue.toLowerCase());
     };
 
     return matchAttribute;
