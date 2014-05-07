@@ -8,10 +8,8 @@ java -jar "../closurecompiler/compiler.jar" \
 --js "core/apply.js" \
 --js "core/update.js" \
 --js "component/component.js" \
---js "selector/selector.js" \
---js "selector/attributes.js" \
---js "selector/parser.js" \
 --js "util/util.js" \
 --js "util/components.js" \
 --js "util/arrays.js" \
+--js "selector/sizzle.js" \
 --js_output_file "../bin/ROM.js"
