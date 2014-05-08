@@ -2,17 +2,35 @@
  * components.js implements:
  * - ROM.util.getElementComponents (function)
  */
-window['ROM']['util']['getElementComponents'] = (function() {
+(function(window) {
   /**
    * getElementComponents()
    * Given an element returns the elements that are attached to it.
    */
-  var getElementComponents = function getElementComponents(element) {
+  window.ROM.util.getElementComponents = function getElementComponents(element) {
     if (!element.hasAttribute || !element.hasAttribute('data-components'))
       return [];
 
-    return element.getAttribute('data-components').split(' ');
+    var components = element.getAttribute('data-components').split(' ');
+
+    return ROM.util.arrayMap(components, getComponentName);
   };
 
-  return getElementComponents;
-})();
+  /**
+   * componentHasPrefix()
+   * Checks whether a component name is prefixed with a
+   * + or - character.
+   */
+  var componentHasPrefix = function componentHasPrefix(name) {
+    return (name[0] === '+' || name[0] === '-');
+  };
+
+  /**
+   * getComponentName()
+   * Given a name returns the actual name (removes its prefix
+   * if there is one).
+   */
+  var getComponentName = function getComponentName(name) {
+    return componentHasPrefix(name) ? name.substr(1) : name;
+  };
+})(window);
