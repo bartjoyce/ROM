@@ -1,7 +1,7 @@
-window['ROM'] = (function() {
-  var ROM = {};
-
-
-
-  return ROM;
-})();
+/**
+ * main.js implements:
+ * - ROM (object)
+ */
+(function(window) {
+  window.ROM = {};
+})(window);

@@ -3,9 +3,9 @@
  * - ROM.components (object)
  * - ROM.Component (constructor)
  */
-window['ROM']['components'] = {};
+(function(window) {
+  window.ROM.components = {};
 
-window['ROM']['Component'] = (function() {
   /**
    * new Component()
    * Creates a new component object which can control elements.
@@ -14,7 +14,7 @@ window['ROM']['Component'] = (function() {
    * it acts upon; it takes an events object which defines the
    * behaviours it adds to elements.
    */
-  var Component = function Component(name, selector, events) {
+  window.ROM.Component = function Component(name, selector, events) {
     var name = name || 'untitled_component';
     var selector = selector || '';
     var events = events || {};
@@ -41,6 +41,4 @@ window['ROM']['Component'] = (function() {
   var isValidName = function isValidName(name) {
     return (name.length > 0 && name.indexOf(' ') === -1 && name[0] !== '+' && name[0] !== '-');
   };
-
-  return Component;
-})();
+})(window);

@@ -4,13 +4,13 @@
  * - ROM.util.arrayMap (function)
  * - ROM.util.arrayReduce (function)
  */
-window['ROM']['util']['arrayFilter'] = (function() {
+(function(window) {
   /**
    * arrayFilter()
    * Filters an array based on the criteria set by the filterFn;
    * returns the filtered array.
    */
-  var arrayFilter = function arrayFilter(array, filterFn) {
+  window.ROM.util.arrayFilter = function arrayFilter(array, filterFn) {
     var newArray = [];
 
     for (var i = 0; i < array.length; i += 1)
@@ -20,26 +20,18 @@ window['ROM']['util']['arrayFilter'] = (function() {
     return newArray;
   };
 
-  return arrayFilter;
-})();
-
-window['ROM']['util']['arrayMap'] = (function() {
   /**
    * arrayMap()
    * Maps the output of mapFn to all elements of a given array,
    * mutates and returns the origin array.
    */
-  var arrayMap = function arrayMap(array, mapFn) {
+  window.ROM.util.arrayMap = function arrayMap(array, mapFn) {
     for (var i = 0; i < array.length; i += 1)
       array[i] = mapFn(array[i], i);
 
     return array;
   };
 
-  return arrayMap;
-})();
-
-window['ROM']['util']['arrayReduce'] = (function() {
   /**
    * arrayReduce()
    * Runs a reduceFn on all elements of the array
@@ -47,7 +39,7 @@ window['ROM']['util']['arrayReduce'] = (function() {
    * Optional third argument: startingValue. If it is
    * an empty array it will return the startingValue.
    */
-  var arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
+  window.ROM.util.arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
     var value = array[0] || startingValue;
 
     if (array.length === 1)
@@ -58,6 +50,4 @@ window['ROM']['util']['arrayReduce'] = (function() {
 
     return value;
   };
-
-  return arrayReduce;
-})();
+})(window);

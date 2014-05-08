@@ -3,27 +3,28 @@
  * - ROM.apply (function)
  * - ROM.applyAsync (function)
  */
-window['ROM']['apply'] = (function() {
+(function(window) {
   /**
    * apply()
    * Executes a function followed by a digest.
    */
-  var apply = function apply(fn) {
+  window.ROM.apply = function apply(fn) {
     ROM.digest.queue(fn);
     ROM.digest();
   };
 
-  return apply;
-})();
-
-window['ROM']['applyAsync'] = (function() {
+  /**
+   * scheduledDigest
+   * Used by applyAsync() to check whether
+   * a digest has already been scheduled.
+   */
   var scheduledDigest = false;
 
   /**
    * applyAsync()
    * Applies a function in the next js step
    */
-  var applyAsync = function applyAsync(fn) {
+  window.ROM.applyAsync = function applyAsync(fn) {
     if (!scheduledDigest) {
       setTimeout(function applyAsyncTimeout() {
         scheduledDigest = false;
@@ -35,6 +36,4 @@ window['ROM']['applyAsync'] = (function() {
 
     ROM.digest.queue(fn);
   };
-
-  return applyAsync;
-})();
+})(window);
