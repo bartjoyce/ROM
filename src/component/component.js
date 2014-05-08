@@ -25,11 +25,13 @@
     if (components[name] !== undefined)
       throw "Component already exists with name: " + name;
 
-    this.name = name;
-    this.selector = selector;
-    this.events = events;
+    this['name'] = name;
+    this['selector'] = selector;
+    this['events'] = events;
 
-    this.matchFn = Sizzle.compile(selector);
+    this['matchFn'] = Sizzle.compile(selector);
+
+    components[name] = this;
 
     return this;
   };
@@ -43,6 +45,6 @@
   };
 
   // EXPOSE
-  window.ROM.components = components;
-  window.ROM.Component = Component;
+  window['ROM']['components'] = components;
+  window['ROM']['Component'] = Component;
 })();

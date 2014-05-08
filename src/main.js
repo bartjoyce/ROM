@@ -6,5 +6,5 @@
   var ROM = {};
 
   // EXPOSE
-  window.ROM = ROM;
+  window['ROM'] = ROM;
 })();

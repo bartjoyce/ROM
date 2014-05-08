@@ -2,7 +2,7 @@
  * update.js implements:
  * - ROM.update (function)
  */
-(function() {
+(function(ROM) {
   /**
    * update()
    * Given an element it updates all its components.
@@ -30,5 +30,5 @@
   };
 
   // EXPOSE
-  window.ROM.update = update;
-})();
+  ROM['update'] = update;
+})(window['ROM']);

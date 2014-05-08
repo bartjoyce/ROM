@@ -3,14 +3,14 @@
  * - ROM.apply (function)
  * - ROM.applyAsync (function)
  */
-(function() {
+(function(ROM) {
   /**
    * apply()
    * Executes a function followed by a digest.
    */
   var apply = function apply(fn) {
-    ROM.digest.queue(fn);
-    ROM.digest();
+    ROM['digest']['queue'](fn);
+    ROM['digest']();
   };
 
   var scheduledDigest = false;
@@ -23,16 +23,16 @@
     if (!scheduledDigest) {
       setTimeout(function applyAsyncTimeout() {
         scheduledDigest = false;
-        ROM.digest();
+        ROM['digest']();
       }, 0);
     }
 
     scheduledDigest = true;
 
-    ROM.digest.queue(fn);
+    ROM['digest']['queue'](fn);
   };
 
   // EXPOSE
-  window.ROM.apply = apply;
-  window.ROM.applyAsync = applyAsync;
-})();
+  ROM['apply'] = apply;
+  ROM['applyAsync'] = applyAsync;
+})(window['ROM']);

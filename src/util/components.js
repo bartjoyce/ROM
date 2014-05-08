@@ -2,7 +2,7 @@
  * components.js implements:
  * - ROM.util.getElementComponents (function)
  */
-(function() {
+(function(ROM) {
   /**
    * getElementComponents()
    * Given an element returns the elements that are attached to it.
@@ -13,7 +13,7 @@
 
     var components = element.getAttribute('data-components').split(' ');
 
-    return ROM.util.arrayMap(components, getComponentName);
+    return ROM['util']['arrayMap'](components, getComponentName);
   };
 
   /**
@@ -35,5 +35,5 @@
   };
 
   // EXPOSE
-  window.ROM.util.getElementComponents = getElementComponents;
-})();
+  ROM['util']['getElementComponents'] = getElementComponents;
+})(window['ROM']);

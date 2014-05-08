@@ -4,7 +4,7 @@
  * - ROM.util.arrayMap (function)
  * - ROM.util.arrayReduce (function)
  */
-(function() {
+(function(ROM) {
   /**
    * arrayFilter()
    * Filters an array based on the criteria set by the filterFn;
@@ -52,7 +52,7 @@
   };
 
   // EXPOSE
-  window.ROM.util.arrayFilter = arrayFilter;
-  window.ROM.util.arrayMap = arrayMap;
-  window.ROM.util.arrayReduce = arrayReduce;
-})();
+  ROM['util']['arrayFilter'] = arrayFilter;
+  ROM['util']['arrayMap'] = arrayMap;
+  ROM['util']['arrayReduce'] = arrayReduce;
+})(window['ROM']);
