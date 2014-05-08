@@ -12,4 +12,5 @@ java -jar "../closurecompiler/compiler.jar" \
 --js "util/components.js" \
 --js "util/arrays.js" \
 --js "selector/sizzle.js" \
+--compilation_level ADVANCED_OPTIMIZATIONS \
 --js_output_file "../bin/ROM.js"
