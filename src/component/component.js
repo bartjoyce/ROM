@@ -16,20 +16,30 @@ window['ROM']['Component'] = (function() {
    */
   var Component = function Component(name, selector, events) {
     var name = name || 'untitled_component';
-    var selectors = selector.split(',') || '';
+    var selector = selector || '';
     var events = events || {};
 
-    if (this.name.indexOf(' ') !== -1)
-      throw "Component name cannot have spaces: " + this.name;
+    if (!isValidName(name))
+      throw "Invalid component name: " + name;
+
+    if (ROM.components[name] !== undefined)
+      throw "Component already exists with name: " + name;
 
     this.name = name;
-    this.selectors = [];
+    this.selector = selector;
     this.events = events;
 
-    for (var i = 0; i < selectors.length; i += 1)
-      this.selectors.push(ROM.selector.parseString(selectors[i]));
+    this.matchFn = Sizzle.compile(selector);
 
     return this;
+  };
+
+  /**
+   * isValidName()
+   * Checks whether a given name is a valid component name.
+   */
+  var isValidName = function isValidName(name) {
+    return (name.length > 0 && name.indexOf(' ') === -1 && name[0] !== '+' && name[0] !== '-');
   };
 
   return Component;
