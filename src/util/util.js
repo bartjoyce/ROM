@@ -2,6 +2,9 @@
  * util.js implements:
  * - ROM.util (object)
  */
-(function(window) {
-  window.ROM.util = {};
-})(window);
+(function() {
+  var util = {};
+
+  // EXPOSE
+  window.ROM.util = util;
+})();

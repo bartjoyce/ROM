@@ -2,6 +2,9 @@
  * main.js implements:
  * - ROM (object)
  */
-(function(window) {
-  window.ROM = {};
-})(window);
+(function() {
+  var ROM = {};
+
+  // EXPOSE
+  window.ROM = ROM;
+})();

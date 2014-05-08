@@ -3,8 +3,8 @@
  * - ROM.components (object)
  * - ROM.Component (constructor)
  */
-(function(window) {
-  window.ROM.components = {};
+(function() {
+  var components = {};
 
   /**
    * new Component()
@@ -14,7 +14,7 @@
    * it acts upon; it takes an events object which defines the
    * behaviours it adds to elements.
    */
-  window.ROM.Component = function Component(name, selector, events) {
+   var Component = function Component(name, selector, events) {
     var name = name || 'untitled_component';
     var selector = selector || '';
     var events = events || {};
@@ -22,7 +22,7 @@
     if (!isValidName(name))
       throw "Invalid component name: " + name;
 
-    if (ROM.components[name] !== undefined)
+    if (components[name] !== undefined)
       throw "Component already exists with name: " + name;
 
     this.name = name;
@@ -41,4 +41,8 @@
   var isValidName = function isValidName(name) {
     return (name.length > 0 && name.indexOf(' ') === -1 && name[0] !== '+' && name[0] !== '-');
   };
-})(window);
+
+  // EXPOSE
+  window.ROM.components = components;
+  window.ROM.Component = Component;
+})();
