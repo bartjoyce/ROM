@@ -29,7 +29,18 @@
     this['selector'] = selector;
     this['events'] = events;
 
-    this['matchFn'] = Sizzle.compile(selector);
+    Sizzle.compile(selector);
+
+    /**
+     * matchFn()
+     * Given an element returns whether
+     * it matches the selector.
+     */
+    var matchFn = function matchFn(element) {
+      return Sizzle.matchesSelector(element, selector);
+    };
+
+    this['matchFn'] = matchFn;
 
     components[name] = this;
 
