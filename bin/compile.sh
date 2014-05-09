@@ -8,6 +8,7 @@ java -jar "../closurecompiler/compiler.jar" \
 --js "core/apply.js" \
 --js "core/update.js" \
 --js "component/component.js" \
+--js "component/match.js" \
 --js "util/util.js" \
 --js "util/components.js" \
 --js "util/arrays.js" \
