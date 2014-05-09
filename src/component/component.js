@@ -3,7 +3,7 @@
  * - ROM.components (object)
  * - ROM.Component (constructor)
  */
-(function() {
+(function(ROM) {
   var components = {};
 
   /**
@@ -45,6 +45,6 @@
   };
 
   // EXPOSE
-  window['ROM']['components'] = components;
-  window['ROM']['Component'] = Component;
-})();
+  ROM['components'] = components;
+  ROM['Component'] = Component;
+})(window['ROM']);
