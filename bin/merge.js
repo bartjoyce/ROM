@@ -16,27 +16,27 @@ var logging = (process.argv.length > 2) ? (process.argv[2] !== '--silent') : tru
 if (!logging)
   console.log = function() {};
 
-// ScriptFile is a file referred to in files.txt
-function ScriptFile(filePath) {
-  console.log('File: ' + filePath);
+// ScriptLines are textlines in the output
+function ScriptLines(lines) {
+  this.getContent = function() {
+    return lines;
+  }
+
+  return this;
+}
+
+// ScriptEmbed is a script file embedded in the output
+function ScriptEmbed(filePath) {
+  console.log('Embed: ' + filePath);
 
   this.getContent = function() {
     return fs.readFileSync(filePath, 'utf8').split('\n');
   }
-}
 
-// ScriptLine is a line embedded in files.txt
-function ScriptEmbed(lines) {
-  console.log('Embed: ' + lines[0]);
-
-  this.getContent = function() {
-    return lines;
-  }
+  return this;
 }
 
 function getContent() {
-  console.log('Reading files.txt...');
-
   // Read files
   var files = fs.readFileSync(paths.files, 'utf8');
   var filesLines = files.split('\n');
@@ -45,9 +45,6 @@ function getContent() {
   var content = [];
 
   // Functions
-  function isComment(line) {
-    return (line[0] === '#');
-  }
   function isEmbed(line) {
     return (line[0] === '>' && line[1] === ' ');
   }
@@ -56,38 +53,27 @@ function getContent() {
   while (i < filesLines.length) {
     var line = filesLines[i];
 
-    // Nothing
-    if (line === '') {
-      i += 1;
-      continue;
-    }
-
-    // Comment
-    if (isComment(line)) {
-      i += 1;
-      continue;
-    }
-
     // Embedded script
     if (isEmbed(line)) {
-      var embedLines = [];
+      content.push(new ScriptEmbed(path.join(paths.src, line.substr(2))));
+      i += 1;
 
-      while (i < filesLines.length) {
-        if (!isEmbed(filesLines[i]))
-          break;
-        else
-          embedLines.push(filesLines[i].substr(2));
-
-        i += 1;
-      }
-
-      content.push(new ScriptEmbed(embedLines));
       continue;
     }
 
-    // Script file
-    content.push(new ScriptFile(path.join(paths.src, line)));
-    i += 1;
+    // Text lines
+    var from = i;
+
+    while (i < filesLines.length) {
+      if (isEmbed(filesLines[i]))
+        break;
+
+      i += 1;
+    }
+
+    var textLines = filesLines.slice(from, i);
+
+    content.push(new ScriptLines(textLines));
   }
 
   return content;
@@ -110,9 +96,6 @@ function writeOutput(content) {
         stream.write(lines[j]);
         stream.write('\n');
       }
-
-      // Spacing between content
-      stream.write('\n');
     }
 
     stream.end();
