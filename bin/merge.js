@@ -7,9 +7,11 @@ var fs = require('fs');
 
 var paths = {
   src:    path.join(__dirname, '..', 'src'),
-  files:  path.join(__dirname, 'FILES'),
+  files:  path.join(__dirname, 'ROM.template.js'),
   output: path.join(__dirname, 'ROM.js')
 };
+
+var embedPrefix = '//> ';
 
 var logging = (process.argv.length > 2) ? (process.argv[2] !== '--silent') : true;
 
@@ -46,7 +48,8 @@ function getContent() {
 
   // Functions
   function isEmbed(line) {
-    return (line[0] === '>' && line[1] === ' ');
+    return (line.length > embedPrefix.length &&
+            line.substr(0, embedPrefix.length) === embedPrefix);
   }
 
   var i = 0;
@@ -55,7 +58,7 @@ function getContent() {
 
     // Embedded script
     if (isEmbed(line)) {
-      content.push(new ScriptEmbed(path.join(paths.src, line.substr(2))));
+      content.push(new ScriptEmbed(path.join(paths.src, line.substr(embedPrefix.length))));
       i += 1;
 
       continue;
