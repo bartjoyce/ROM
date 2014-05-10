@@ -11,6 +11,7 @@ var ROM = {};
 window['ROM'] = ROM;
 
 
+/*** Core ***/
 /**
  * digest.js implements:
  * - ROM.digest (function)
@@ -86,7 +87,6 @@ window['ROM'] = ROM;
   };
 })();
 
-
 /**
  * apply.js implements:
  * - ROM.apply (function)
@@ -122,7 +122,6 @@ window['ROM'] = ROM;
   };
 })();
 
-
 /**
  * update.js implements:
  * - ROM.update (function)
@@ -156,6 +155,7 @@ window['ROM'] = ROM;
 })();
 
 
+/*** Components ***/
 /**
  * component.js implements:
  * - ROM.components (object)
@@ -214,7 +214,6 @@ window['ROM'] = ROM;
   };
 })();
 
-
 /**
  * match.js implements:
  * ROM.matchComponents (function)
@@ -251,12 +250,12 @@ window['ROM'] = ROM;
 })();
 
 
+/*** Utilities ***/
 /**
  * util.js implements:
  * - ROM.util (object)
  */
 ROM.util = {};
-
 
 /**
  * components.js implements:
@@ -294,7 +293,6 @@ ROM.util = {};
     return componentHasPrefix(name) ? name.substr(1) : name;
   };
 })();
-
 
 /**
  * array.js implements:
@@ -353,6 +351,7 @@ ROM.util = {};
 
 })(window);
 
+/*** Sizzle ***/
 /*!
  * Sizzle CSS Selector Engine v@VERSION
  * http://sizzlejs.com/
