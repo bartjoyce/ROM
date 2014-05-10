@@ -16,16 +16,15 @@
    * this implementation.
    */
   ROM.matchComponents = function matchComponents(element) {
-    var components = ROM['components'];
-    var componentKeys = Object.keys(components);
+    var componentKeys = Object.keys(ROM.components);
 
     var matched = [];
 
     for (var i = 0; i < componentKeys.length; i += 1) {
       var componentKey = componentKeys[i];
-      var component = components[componentKey];
+      var component = ROM.components[componentKey];
 
-      if (component['matchFn'](element))
+      if (component.matchFn(element))
         matched.push(componentKey);
     }
 
