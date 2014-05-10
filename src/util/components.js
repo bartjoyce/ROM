@@ -2,12 +2,12 @@
  * components.js implements:
  * - ROM.util.getElementComponents (function)
  */
-(function(ROM) {
+(function() {
   /**
    * getElementComponents()
    * Given an element returns the elements that are attached to it.
    */
-  var getElementComponents = function getElementComponents(element) {
+  ROM.util.getElementComponents = function getElementComponents(element) {
     if (!element.hasAttribute || !element.hasAttribute('data-components'))
       return [];
 
@@ -33,7 +33,4 @@
   var getComponentName = function getComponentName(name) {
     return componentHasPrefix(name) ? name.substr(1) : name;
   };
-
-  // EXPOSE
-  ROM['util']['getElementComponents'] = getElementComponents;
-})(window['ROM']);
+})();

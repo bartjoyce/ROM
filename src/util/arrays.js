@@ -4,13 +4,13 @@
  * - ROM.util.arrayMap (function)
  * - ROM.util.arrayReduce (function)
  */
-(function(ROM) {
+(function() {
   /**
    * arrayFilter()
    * Filters an array based on the criteria set by the filterFn;
    * returns the filtered array.
    */
-  var arrayFilter = function arrayFilter(array, filterFn) {
+  ROM.util.arrayFilter = function arrayFilter(array, filterFn) {
     var newArray = [];
 
     for (var i = 0; i < array.length; i += 1)
@@ -25,7 +25,7 @@
    * Maps the output of mapFn to all elements of a given array,
    * mutates and returns the origin array.
    */
-  var arrayMap = function arrayMap(array, mapFn) {
+  ROM.util.arrayMap = function arrayMap(array, mapFn) {
     for (var i = 0; i < array.length; i += 1)
       array[i] = mapFn(array[i], i);
 
@@ -39,7 +39,7 @@
    * Optional third argument: startingValue. If it is
    * an empty array it will return the startingValue.
    */
-  var arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
+  ROM.util.arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
     var value = array[0] || startingValue;
 
     if (array.length === 1)
@@ -50,9 +50,4 @@
 
     return value;
   };
-
-  // EXPOSE
-  ROM['util']['arrayFilter'] = arrayFilter;
-  ROM['util']['arrayMap'] = arrayMap;
-  ROM['util']['arrayReduce'] = arrayReduce;
-})(window['ROM']);
+})();

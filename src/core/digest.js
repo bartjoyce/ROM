@@ -4,7 +4,7 @@
  * - ROM.digest.async (function)
  * - ROM.digest.queuePostDigest (function)
  */
-(function(ROM) {
+(function() {
   var isDigesting = false;
 
   var digestQueue = [];
@@ -14,7 +14,7 @@
    * digest()
    * Runs a digest cycle (updates elements, etc...)
    */
-  var digest = function digest() {
+  ROM.digest = function digest() {
     if (isDigesting)
       return;
 
@@ -53,7 +53,7 @@
    * Adds a function to the queue (which executes
    * during a digest)
    */
-  digest['queue'] = function queue(fn) {
+  ROM.digest.queue = function queue(fn) {
     if (typeof fn !== 'function')
       return;
 
@@ -65,13 +65,10 @@
    * Adds a function to the postDigest queue (which
    * executes after a digest)
    */
-  digest['queuePostDigest'] = function queuePostDigest(fn) {
+  ROM.digest.queuePostDigest = function queuePostDigest(fn) {
     if (typeof fn !== 'function')
       return;
 
     postDigestQueue.push(fn);
   };
-
-  // EXPOSE
-  ROM['digest'] = digest;
-})(window['ROM']);
+})();

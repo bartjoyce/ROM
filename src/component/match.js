@@ -2,7 +2,7 @@
  * match.js implements:
  * ROM.matchComponents (function)
  */
-(function(ROM) {
+(function() {
   /**
    * matchComponents()
    * Takes an element and matches it with
@@ -15,7 +15,7 @@
    * a tree structure will be used to replace
    * this implementation.
    */
-  var matchComponents = function matchComponents(element) {
+  ROM.matchComponents = function matchComponents(element) {
     var components = ROM['components'];
     var componentKeys = Object.keys(components);
 
@@ -31,7 +31,4 @@
 
     return matched;
   };
-
-  // EXPOSE
-  ROM['matchComponents'] = matchComponents;
-})(window['ROM']);
+})();

@@ -2,14 +2,14 @@
  * update.js implements:
  * - ROM.update (function)
  */
-(function(ROM) {
+(function() {
   /**
    * update()
    * Given an element it updates all its components.
    * It then proceeds to update all parent and child
    * elements.
    */
-  var update = function update(element) {
+  ROM.update = function update(element) {
 
   };
 
@@ -28,7 +28,4 @@
   var updateInwards = function updateInwards(element) {
 
   };
-
-  // EXPOSE
-  ROM['update'] = update;
-})(window['ROM']);
+})();

@@ -3,8 +3,8 @@
  * - ROM.components (object)
  * - ROM.Component (constructor)
  */
-(function(ROM) {
-  var components = {};
+(function() {
+  ROM.components = {};
 
   /**
    * new Component()
@@ -14,7 +14,7 @@
    * it acts upon; it takes an events object which defines the
    * behaviours it adds to elements.
    */
-   var Component = function Component(name, selector, events) {
+  ROM.Component = function Component(name, selector, events) {
     var name = name || 'untitled_component';
     var selector = selector || '';
     var events = events || {};
@@ -25,9 +25,9 @@
     if (components[name] !== undefined)
       throw "Component already exists with name: " + name;
 
-    this['name'] = name;
-    this['selector'] = selector;
-    this['events'] = events;
+    this.name = name;
+    this.selector = selector;
+    this.events = events;
 
     Sizzle.compile(selector);
 
@@ -40,7 +40,7 @@
       return Sizzle.matchesSelector(element, selector);
     };
 
-    this['matchFn'] = matchFn;
+    this.matchFn = matchFn;
 
     components[name] = this;
 
@@ -54,8 +54,4 @@
   var isValidName = function isValidName(name) {
     return (name.length > 0 && name.indexOf(' ') === -1 && name[0] !== '+' && name[0] !== '-');
   };
-
-  // EXPOSE
-  ROM['components'] = components;
-  ROM['Component'] = Component;
-})(window['ROM']);
+})();
