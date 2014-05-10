@@ -4,12 +4,11 @@
  * main.js implements:
  * - ROM (object)
  */
-(function() {
-  var ROM = {};
 
-  // EXPOSE
-  window['ROM'] = ROM;
-})();
+var ROM = {};
+
+// EXPOSE
+window['ROM'] = ROM;
 
 
 /**
@@ -18,7 +17,7 @@
  * - ROM.digest.async (function)
  * - ROM.digest.queuePostDigest (function)
  */
-(function(ROM) {
+(function() {
   var isDigesting = false;
 
   var digestQueue = [];
@@ -28,7 +27,7 @@
    * digest()
    * Runs a digest cycle (updates elements, etc...)
    */
-  var digest = function digest() {
+  ROM.digest = function digest() {
     if (isDigesting)
       return;
 
@@ -67,7 +66,7 @@
    * Adds a function to the queue (which executes
    * during a digest)
    */
-  digest['queue'] = function queue(fn) {
+  ROM.digest.queue = function queue(fn) {
     if (typeof fn !== 'function')
       return;
 
@@ -79,16 +78,13 @@
    * Adds a function to the postDigest queue (which
    * executes after a digest)
    */
-  digest['queuePostDigest'] = function queuePostDigest(fn) {
+  ROM.digest.queuePostDigest = function queuePostDigest(fn) {
     if (typeof fn !== 'function')
       return;
 
     postDigestQueue.push(fn);
   };
-
-  // EXPOSE
-  ROM['digest'] = digest;
-})(window['ROM']);
+})();
 
 
 /**
@@ -96,14 +92,14 @@
  * - ROM.apply (function)
  * - ROM.applyAsync (function)
  */
-(function(ROM) {
+(function() {
   /**
    * apply()
    * Executes a function followed by a digest.
    */
-  var apply = function apply(fn) {
-    ROM['digest']['queue'](fn);
-    ROM['digest']();
+  ROM.apply = function apply(fn) {
+    ROM.digest.queue(fn);
+    ROM.digest();
   };
 
   var scheduledDigest = false;
@@ -112,7 +108,7 @@
    * applyAsync()
    * Applies a function in the next js step
    */
-  var applyAsync = function applyAsync(fn) {
+  ROM.applyAsync = function applyAsync(fn) {
     if (!scheduledDigest) {
       setTimeout(function applyAsyncTimeout() {
         scheduledDigest = false;
@@ -122,27 +118,23 @@
 
     scheduledDigest = true;
 
-    ROM['digest']['queue'](fn);
+    ROM.digest.queue(fn);
   };
-
-  // EXPOSE
-  ROM['apply'] = apply;
-  ROM['applyAsync'] = applyAsync;
-})(window['ROM']);
+})();
 
 
 /**
  * update.js implements:
  * - ROM.update (function)
  */
-(function(ROM) {
+(function() {
   /**
    * update()
    * Given an element it updates all its components.
    * It then proceeds to update all parent and child
    * elements.
    */
-  var update = function update(element) {
+  ROM.update = function update(element) {
 
   };
 
@@ -161,10 +153,7 @@
   var updateInwards = function updateInwards(element) {
 
   };
-
-  // EXPOSE
-  ROM['update'] = update;
-})(window['ROM']);
+})();
 
 
 /**
@@ -172,8 +161,8 @@
  * - ROM.components (object)
  * - ROM.Component (constructor)
  */
-(function(ROM) {
-  var components = {};
+(function() {
+  ROM.components = {};
 
   /**
    * new Component()
@@ -183,7 +172,7 @@
    * it acts upon; it takes an events object which defines the
    * behaviours it adds to elements.
    */
-   var Component = function Component(name, selector, events) {
+  ROM.Component = function Component(name, selector, events) {
     var name = name || 'untitled_component';
     var selector = selector || '';
     var events = events || {};
@@ -194,9 +183,9 @@
     if (components[name] !== undefined)
       throw "Component already exists with name: " + name;
 
-    this['name'] = name;
-    this['selector'] = selector;
-    this['events'] = events;
+    this.name = name;
+    this.selector = selector;
+    this.events = events;
 
     Sizzle.compile(selector);
 
@@ -209,7 +198,7 @@
       return Sizzle.matchesSelector(element, selector);
     };
 
-    this['matchFn'] = matchFn;
+    this.matchFn = matchFn;
 
     components[name] = this;
 
@@ -223,18 +212,14 @@
   var isValidName = function isValidName(name) {
     return (name.length > 0 && name.indexOf(' ') === -1 && name[0] !== '+' && name[0] !== '-');
   };
-
-  // EXPOSE
-  ROM['components'] = components;
-  ROM['Component'] = Component;
-})(window['ROM']);
+})();
 
 
 /**
  * match.js implements:
  * ROM.matchComponents (function)
  */
-(function(ROM) {
+(function() {
   /**
    * matchComponents()
    * Takes an element and matches it with
@@ -247,7 +232,7 @@
    * a tree structure will be used to replace
    * this implementation.
    */
-  var matchComponents = function matchComponents(element) {
+  ROM.matchComponents = function matchComponents(element) {
     var components = ROM['components'];
     var componentKeys = Object.keys(components);
 
@@ -263,34 +248,26 @@
 
     return matched;
   };
-
-  // EXPOSE
-  ROM['matchComponents'] = matchComponents;
-})(window['ROM']);
+})();
 
 
 /**
  * util.js implements:
  * - ROM.util (object)
  */
-(function(ROM) {
-  var util = {};
-
-  // EXPOSE
-  ROM['util'] = util;
-})(window['ROM']);
+ROM.util = {};
 
 
 /**
  * components.js implements:
  * - ROM.util.getElementComponents (function)
  */
-(function(ROM) {
+(function() {
   /**
    * getElementComponents()
    * Given an element returns the elements that are attached to it.
    */
-  var getElementComponents = function getElementComponents(element) {
+  ROM.util.getElementComponents = function getElementComponents(element) {
     if (!element.hasAttribute || !element.hasAttribute('data-components'))
       return [];
 
@@ -316,10 +293,7 @@
   var getComponentName = function getComponentName(name) {
     return componentHasPrefix(name) ? name.substr(1) : name;
   };
-
-  // EXPOSE
-  ROM['util']['getElementComponents'] = getElementComponents;
-})(window['ROM']);
+})();
 
 
 /**
@@ -328,13 +302,13 @@
  * - ROM.util.arrayMap (function)
  * - ROM.util.arrayReduce (function)
  */
-(function(ROM) {
+(function() {
   /**
    * arrayFilter()
    * Filters an array based on the criteria set by the filterFn;
    * returns the filtered array.
    */
-  var arrayFilter = function arrayFilter(array, filterFn) {
+  ROM.util.arrayFilter = function arrayFilter(array, filterFn) {
     var newArray = [];
 
     for (var i = 0; i < array.length; i += 1)
@@ -349,7 +323,7 @@
    * Maps the output of mapFn to all elements of a given array,
    * mutates and returns the origin array.
    */
-  var arrayMap = function arrayMap(array, mapFn) {
+  ROM.util.arrayMap = function arrayMap(array, mapFn) {
     for (var i = 0; i < array.length; i += 1)
       array[i] = mapFn(array[i], i);
 
@@ -363,7 +337,7 @@
    * Optional third argument: startingValue. If it is
    * an empty array it will return the startingValue.
    */
-  var arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
+  ROM.util.arrayReduce = function arrayReduce(array, reduceFn, startingValue) {
     var value = array[0] || startingValue;
 
     if (array.length === 1)
@@ -374,12 +348,7 @@
 
     return value;
   };
-
-  // EXPOSE
-  ROM['util']['arrayFilter'] = arrayFilter;
-  ROM['util']['arrayMap'] = arrayMap;
-  ROM['util']['arrayReduce'] = arrayReduce;
-})(window['ROM']);
+})();
 
 
 })(window);
