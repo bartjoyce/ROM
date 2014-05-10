@@ -1,0 +1,28 @@
+# List of files to be merged
+
+# Lines preceded with > are embedded
+# in to the file.
+# Lines preceded with # are ignored
+
+> (function(window) {
+
+main.js
+
+# Core
+core/digest.js
+core/apply.js
+core/update.js
+
+# Components
+component/component.js
+component/match.js
+
+# Utilities
+util/util.js
+util/components.js
+util/arrays.js
+
+> })(window);
+
+# Sizzle selector library
+selector/sizzle.js

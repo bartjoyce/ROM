@@ -1,17 +1,11 @@
 #!/bin/bash
 cd ${0%/*}
-cd ../src
 
+# Merge source files
+node merge.js --silent
+
+# Compile ROM.js
 java -jar "../closurecompiler/compiler.jar" \
---js "main.js" \
---js "core/digest.js" \
---js "core/apply.js" \
---js "core/update.js" \
---js "component/component.js" \
---js "component/match.js" \
---js "util/util.js" \
---js "util/components.js" \
---js "util/arrays.js" \
---js "selector/sizzle.js" \
+--js "ROM.js" \
 --compilation_level ADVANCED_OPTIMIZATIONS \
---js_output_file "../bin/ROM.js"
+--js_output_file "ROM.min.js"
