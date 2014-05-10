@@ -22,7 +22,7 @@
     if (!isValidName(name))
       throw "Invalid component name: " + name;
 
-    if (components[name] !== undefined)
+    if (ROM.components[name] !== undefined)
       throw "Component already exists with name: " + name;
 
     this.name = name;
@@ -42,7 +42,7 @@
 
     this.matchFn = matchFn;
 
-    components[name] = this;
+    ROM.components[name] = this;
 
     return this;
   };
