@@ -9,18 +9,17 @@ Like jQuery, ROM uses CSS selectors for identifying elements in the DOM, the dif
 
 Setup & Compilation
 -------------------
-ROM uses the [Google Closure Compiler](https://developers.google.com/closure/compiler/), which requires JVM version 1.7 or later. You can compile the ``ROM.js`` file by executing the ``bin/compile.sh`` script like so:
+ROM consists of many javascript files in the ``src`` directory. All these files are merged in to ``ROM.js`` by the Node.js script ``bin/merge.js``. After the files have been merged, the [Google Closure Compiler](https://developers.google.com/closure/compiler/) is used to generate a minified, optimised file. You can merge and compile the ``ROM.js`` and ``ROM.min.js`` files by executing the ``bin/compile.sh`` script like so:
 ```bash
 sh bin/compile.sh
 ```
 
 Dependencies
 ------------
+- Node.js
 - Google Closure Compiler
-- JVM version 1.7 or later
+- JVM version 1.7 or later (for the Google Closure Compiler)
 
 To-do
 -----
-- [x] Create minimal CSS Selector parser
-- [ ] Create CSS Selector matching system
 - [ ] Create component structure
