@@ -14,6 +14,8 @@
 
     var components = element.getAttribute('data-components').toLowerCase().split(' ');
 
+    components = ROM.util.arrayFilter(components, componentIsIncluded);
+
     return ROM.util.arrayMap(components, getComponentName);
   };
 
@@ -31,7 +33,8 @@
     var components = element.getAttribute('data-components').toLowerCase().split(' ');
 
     for (var i = 0; i < components.length; i += 1)
-      if (getComponentName(components[i]) === component)
+      if (componentIsIncluded(components[i]) &&
+          getComponentName(components[i]) === component)
         return true;
 
     return false;
@@ -53,5 +56,15 @@
    */
   var componentHasPrefix = function componentHasPrefix(name) {
     return (name[0] === '+' || name[0] === '-');
+  };
+
+  /**
+   * componentIsIncluded()
+   * Checks whether a component name is included or excluded;
+   * it is an excluded component if it is prefixed with a -
+   * character.
+   */
+  var componentIsIncluded = function componentIsIncluded(name) {
+    return (name[0] !== '-');
   };
 })();
