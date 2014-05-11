@@ -290,6 +290,7 @@ ROM.util = {};
 /**
  * components.js implements:
  * - ROM.util.getElementComponents (function)
+ * - ROM.util.hasComponent (function)
  */
 (function() {
   /**
@@ -300,18 +301,29 @@ ROM.util = {};
     if (!element.hasAttribute || !element.hasAttribute('data-components'))
       return [];
 
-    var components = element.getAttribute('data-components').split(' ');
+    var components = element.getAttribute('data-components').toLowerCase().split(' ');
 
-    return ROM['util']['arrayMap'](components, getComponentName);
+    return ROM.util.arrayMap(components, getComponentName);
   };
 
   /**
-   * componentHasPrefix()
-   * Checks whether a component name is prefixed with a
-   * + or - character.
+   * hasComponent()
+   * Given a component name and an element checks whether the element
+   * has the component.
    */
-  var componentHasPrefix = function componentHasPrefix(name) {
-    return (name[0] === '+' || name[0] === '-');
+  ROM.util.hasComponent = function hasComponent(component, element) {
+    if (!element.hasAttribute || !element.hasAttribute('data-components'))
+      return false;
+
+    component = component.toLowerCase();
+
+    var components = element.getAttribute('data-components').toLowerCase().split(' ');
+
+    for (var i = 0; i < components.length; i += 1)
+      if (getComponentName(components[i]) === component)
+        return true;
+
+    return false;
   };
 
   /**
@@ -321,6 +333,15 @@ ROM.util = {};
    */
   var getComponentName = function getComponentName(name) {
     return componentHasPrefix(name) ? name.substr(1) : name;
+  };
+
+  /**
+   * componentHasPrefix()
+   * Checks whether a component name is prefixed with a
+   * + or - character.
+   */
+  var componentHasPrefix = function componentHasPrefix(name) {
+    return (name[0] === '+' || name[0] === '-');
   };
 })();
 
@@ -2422,5 +2443,15 @@ if ( typeof define === "function" && define.amd ) {
 // EXPOSE
 
 })( window );
+
+/**
+ * component.js implements:
+ * - The :component() pseudo-selector
+ */
+Sizzle.selectors.pseudos['component'] = Sizzle.selectors.createPseudo(function(component) {
+  return function(elem) {
+    return ROM.util.hasComponent(component, elem);
+  };
+});
 
 
