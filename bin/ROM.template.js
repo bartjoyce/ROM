@@ -17,9 +17,13 @@
 //> component/component.js
 //> component/match.js
 
+/**** Object ****/
+//> object/object.js
+
 /*** Utilities ***/
 //> util/util.js
 //> util/components.js
+//> util/element.js
 //> util/arrays.js
 
 })(window);
