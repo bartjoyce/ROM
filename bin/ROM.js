@@ -21,11 +21,16 @@ window['ROM'] = ROM;
 /**
  * digest.js implements:
  * - ROM.digest (function)
- * - ROM.digest.async (function)
+ * - ROM.digest.queue (function)
  * - ROM.digest.queuePostDigest (function)
+ * - ROM.digestAsync (function)
  */
 (function() {
-  var isDigesting = false;
+  /** @const */ var IDLE_PHASE = 0;      // Nothing happening
+  /** @const */ var DIGESTING_PHASE = 1; // Currently digesting
+  /** @const */ var SCHEDULED_PHASE = 2; // Digest is scheduled to happen
+
+  var phase = IDLE_PHASE;
 
   var digestQueue = [];
   var postDigestQueue = [];
@@ -35,10 +40,10 @@ window['ROM'] = ROM;
    * Runs a digest cycle (updates elements, etc...)
    */
   ROM.digest = function digest() {
-    if (isDigesting)
+    if (phase === DIGESTING_PHASE)
       return;
 
-    isDigesting = true;
+    phase = DIGESTING_PHASE;
 
     var ttl = 10;
 
@@ -65,7 +70,7 @@ window['ROM'] = ROM;
     }
     postDigestQueue = [];
 
-    isDigesting = false;
+    phase = IDLE_PHASE;
   };
 
   /**
@@ -91,6 +96,25 @@ window['ROM'] = ROM;
 
     postDigestQueue.push(fn);
   };
+
+  /**
+   * digestAsync()
+   * Runs a digest cycle later on
+   */
+  ROM.digestAsync = function digestAsync() {
+    // Only schedule a digest if none is scheduled
+    // or in progress.
+    if (phase === IDLE_PHASE) {
+      window.setTimeout(function() {
+        if (phase !== SCHEDULED_PHASE)
+          return;
+
+        ROM.digest();
+      }, 0);
+
+      phase = SCHEDULED_PHASE;
+    }
+  };
 })();
 
 /**
@@ -108,23 +132,13 @@ window['ROM'] = ROM;
     ROM.digest();
   };
 
-  var scheduledDigest = false;
-
   /**
    * applyAsync()
-   * Applies a function in the next js step
+   * Applies a function to be executed later.
    */
   ROM.applyAsync = function applyAsync(fn) {
-    if (!scheduledDigest) {
-      setTimeout(function applyAsyncTimeout() {
-        scheduledDigest = false;
-        ROM['digest']();
-      }, 0);
-    }
-
-    scheduledDigest = true;
-
     ROM.digest.queue(fn);
+    ROM.digestAsync();
   };
 })();
 
