@@ -26,3 +26,4 @@
 
 /*** Sizzle ***/
 //> selector/sizzle.js
+//> selector/component.js
