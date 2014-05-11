@@ -10,6 +10,8 @@
   /** @const */ var DIGESTING_PHASE = 1; // Currently digesting
   /** @const */ var SCHEDULED_PHASE = 2; // Digest is scheduled to happen
 
+  /** @const */ var MAX_DIGEST = 10; // Maximum functions to run in a digest cycle
+
   var phase = IDLE_PHASE;
 
   var digestQueue = [];
@@ -25,7 +27,7 @@
 
     phase = DIGESTING_PHASE;
 
-    var ttl = 10;
+    var ttl = MAX_DIGEST;
 
     // Run queue
     for (var i = 0; i < digestQueue.length; i += 1) {
@@ -36,9 +38,14 @@
       }
 
       if (!(ttl--))
-        throw "10 digest iterations reached";
+        break; // Reached maximum functions in a single cycle
     }
-    digestQueue = [];
+
+    if (i < digestQueue.length)
+      // If queue not completely digested, get remainder
+      digestQueue = digestQueue.slice(i);
+    else
+      digestQueue = [];
 
     // Run postDigestQueue
     for (var i = 0; i < postDigestQueue.length; i += 1) {
@@ -50,7 +57,11 @@
     }
     postDigestQueue = [];
 
-    phase = IDLE_PHASE;
+    if (digestQueue.length > 0)
+      // Schedule a new digest if queue not empty
+      ROM.digestAsync();
+    else
+      phase = IDLE_PHASE;
   };
 
   /**
