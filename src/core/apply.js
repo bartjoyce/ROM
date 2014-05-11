@@ -13,22 +13,12 @@
     ROM.digest();
   };
 
-  var scheduledDigest = false;
-
   /**
    * applyAsync()
-   * Applies a function in the next js step
+   * Applies a function to be executed later.
    */
   ROM.applyAsync = function applyAsync(fn) {
-    if (!scheduledDigest) {
-      setTimeout(function applyAsyncTimeout() {
-        scheduledDigest = false;
-        ROM['digest']();
-      }, 0);
-    }
-
-    scheduledDigest = true;
-
     ROM.digest.queue(fn);
+    ROM.digestAsync();
   };
 })();
