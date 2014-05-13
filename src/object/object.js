@@ -103,7 +103,18 @@
 
   // TODO: implement detachComponent()
 
-  // TODO: implement getComponents()
+  /**
+   * getComponents()
+   * Returns an array of the components attached
+   * to the object.
+   */
+  ROM_Object.prototype.getComponents = function getComponents() {
+    if (ROM.util.isElement(this.context))
+      return ROM.util.getComponents(this.context);
+
+    else
+      return this.components;
+  };
 
   // TODO: implement trigger()
 
