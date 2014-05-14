@@ -82,7 +82,9 @@
       if (!this.context.hasAttribute('data-components'))
         this.context.setAttribute('data-components', '+' + component);
       else {
-        var newAttribute = [this.context.getAttribute('data-components'), ' +', component].join('');
+        var oldAttribute = this.context.getAttribute('data-components');
+        var newAttribute = (oldAttribute === '') ? '+' + component : [oldAttribute, ' +', component].join('');
+
         this.context.setAttribute('data-components', newAttribute);
       }
 
@@ -101,7 +103,36 @@
     }
   };
 
-  // TODO: implement detachComponent()
+  /**
+   * detachComponent()
+   * Detaches a component from the object.
+   */
+  ROM_Object.prototype.detachComponent = function detachComponent(component) {
+    component = component.toString().toLowerCase();
+
+    if (ROM.components[component] === undefined)
+      throw 'Component "' + component + '" doesn\'t exist.';
+
+    if (ROM.util.isElement(this.context)) {
+      // Detach component from DOMElement
+
+      if (!ROM.util.hasComponent(component, this.context))
+        return; // Component isn't attached to element
+
+      // TODO: remove event listeners of component from element
+
+      // TODO: remove component from data-components attribute
+
+    } else {
+      // Detach component from object
+
+      var index = this.components.indexOf(component);
+      if (index === -1)
+        return; // Component isn't attached to object
+
+      this.components.splice(index, 1);
+    }
+  };
 
   /**
    * getComponents()
@@ -110,7 +141,7 @@
    */
   ROM_Object.prototype.getComponents = function getComponents() {
     if (ROM.util.isElement(this.context))
-      return ROM.util.getComponents(this.context);
+      return ROM.util.getElementComponents(this.context);
 
     else
       return this.components;
