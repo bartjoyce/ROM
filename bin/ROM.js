@@ -201,7 +201,7 @@ window['ROM'] = ROM;
    * it acts upon; it takes an events object which defines the
    * behaviours it adds to elements.
    */
-  ROM.Component = function Component(name, selector, events) {
+  ROM.Component = function ROM_Component(name, selector, events) {
     var name = name || 'untitled_component';
     var selector = selector || '';
     var events = events || {};
@@ -232,6 +232,18 @@ window['ROM'] = ROM;
     ROM.components[name] = this;
 
     return this;
+  };
+
+  /**
+   * getEvents()
+   * Returns an array of events.
+   */
+  ROM_Component.prototype.getEvents = function getEvents() {
+    var eventKeys = Object.keys(this.events);
+
+    ROM.util.arrayMap(eventKeys, function mapListeners(eventKey) {
+      return [eventKey, this.events[eventKey]];
+    });
   };
 
   /**
@@ -380,7 +392,8 @@ window['ROM'] = ROM;
 
       this.components.push(component);
 
-      // TODO: add events of components to object
+      // Add component events
+      this.eventListeners = this.eventListeners.concat(this.components[component].getEvents());
     }
   };
 
