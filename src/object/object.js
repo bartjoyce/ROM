@@ -99,7 +99,8 @@
 
       this.components.push(component);
 
-      // TODO: add events of components to object
+      // Add component events
+      this.eventListeners = this.eventListeners.concat(this.components[component].getEvents());
     }
   };
 
