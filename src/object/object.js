@@ -100,7 +100,7 @@
       this.components.push(component);
 
       // Add component events
-      this.eventListeners = this.eventListeners.concat(this.components[component].getEvents());
+      this.eventListeners = this.eventListeners.concat(ROM.components[component].getEvents());
     }
   };
 
@@ -132,6 +132,20 @@
         return; // Component isn't attached to object
 
       this.components.splice(index, 1);
+
+      // Remove component events
+      var events = ROM.components[component].getEvents();
+
+      var filterOtherEvents = function filterOtherEvents(event) {
+        for (var i = 0; i < events.length; i += 1)
+          if (events[i][0] === event[0] &&
+              events[i][1] === event[1])
+            return false;
+
+        return true;
+      };
+
+      this.eventListeners = ROM.util.arrayFilter(this.eventListeners, filterOtherEvents);
     }
   };
 
